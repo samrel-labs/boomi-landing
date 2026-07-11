@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
 
     <style>
-        /* ===== متغیرهای CSS (از فایل بومی) ===== */
+        
         :root {
             --bg: #0b0a16;
             --surface: #1a1a2e;
@@ -162,7 +162,7 @@
             margin-bottom: 2rem;
         }
 
-        /* ===== متن مرموز ===== */
+        /* ===== متن ===== */
         .mystic-title {
             font-size: clamp(1.8rem, 5vw, 3rem);
             font-weight: 300;
@@ -191,7 +191,7 @@
             opacity: 0.7;
         }
 
-        /* ===== شمارنده (چپ‌چین) ===== */
+        /* ===== شمارنده ===== */
         .counter {
             display: flex;
             justify-content: center;
@@ -224,8 +224,7 @@
             letter-spacing: 0.1em;
             color: var(--text-muted);
         }
-
-        /* ===== فرم ===== */
+        
         .form-wrapper {
             display: flex;
             flex-wrap: wrap;
@@ -300,8 +299,7 @@
         .form-feedback.error {
             color: var(--error);
         }
-
-        /* ===== فوتر ===== */
+     
         .footer {
             display: flex;
             flex-wrap: wrap;
@@ -325,7 +323,6 @@
             color: var(--brand-end);
         }
 
-        /* ===== واکنش‌گرایی ===== */
         @media (max-width: 480px) {
             .brand { font-size: 2.4rem; }
             .counter-item { min-width: 50px; padding: 0.3rem 0.8rem; }
@@ -339,7 +336,6 @@
 </head>
 <body>
 
-    <!-- ===== دکمه تغییر تم ===== -->
     <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
         <span class="icon" id="themeIcon">🌙</span>
         <span id="themeLabel">تاریک</span>
@@ -352,18 +348,17 @@
             <img src="Boomi.png" alt="Boomi Logo – Share thoughts. Create connections." />
             <div class="logo-fallback">✨ Boomi · logo</div>
         </div>
-
-        <!-- ===== برند ===== -->
+        
         <div class="brand">بومی</div>
         <span class="brand-sub">— به زودی در محله‌ی تو —</span>
 
-        <!-- ===== متن مرموز ===== -->
+        <!-- ===== متن ===== -->
         <div class="mystic-title">
             <span>چیزی در راه است.</span>
         </div>
         <div class="mystic-sub">— آماده‌ای؟ —</div>
 
-        <!-- ===== شمارنده (چپ‌چین) ===== -->
+        <!-- ===== شمارنده ===== -->
         <div class="counter">
             <div class="counter-item">
                 <span class="counter-number" id="days">۰۰</span>
@@ -383,14 +378,12 @@
             </div>
         </div>
 
-        <!-- ===== فرم ثبت‌نام ===== -->
         <div class="form-wrapper">
             <input type="email" id="emailInput" placeholder="ایمیل شما" aria-label="آدرس ایمیل" required />
             <button type="button" id="submitBtn">به من خبر بده</button>
         </div>
         <span class="form-feedback" id="formFeedback">— اولین‌ها خبردار می‌شوند —</span>
 
-        <!-- ===== فوتر ===== -->
         <div class="footer">
             <span>© ۲۰۲۶ بومی</span>
             <a href="#">حریم خصوصی</a>
@@ -422,7 +415,7 @@
         setInterval(updateCounter, 1000);
 
         // ============================================================
-        // ۲. تغییر تم (روشن/تاریک) با ذخیره در localStorage
+        // ۲. تغییر تم با ذخیره در localStorage
         // ============================================================
         const toggleBtn = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
@@ -456,10 +449,7 @@
             updateToggleUI(!nowDark);
         });
 
-        // ============================================================
-        // ۳. فرم ارسال به Google Sheets (via Webhook)
-        // ============================================================
-        // 🔴 آدرس وب‌هوک خود را اینجا قرار دهید (از Google Apps Script)
+
         const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyzfZq98XAzE3l26F1hdxk-txgkYxuCgNalOQmEX_yjBBigxqEb5MRm2FbF7lSyjUoQ/exec';
 		
 		var userIP = null;
@@ -476,20 +466,17 @@
 
         submitBtn.addEventListener('click', function() {
             const email = emailInput.value.trim();
-
-            // اعتبارسنجی
+            
             if (!email || !email.includes('@') || !email.includes('.')) {
                 setFeedback('⚠️ لطفاً یک ایمیل معتبر وارد کن.', 'error');
                 emailInput.focus();
                 return;
             }
 
-            // غیرفعال کردن دکمه
             this.disabled = true;
             this.textContent = 'در حال ارسال ...';
             setFeedback('⏳ در حال ثبت ...', '');
 			
-			// ===== دریافت IP کاربر =====
 			fetch('https://api.ipify.org?format=json')
 			  .then(response => response.json())
 			  .then(data => {
