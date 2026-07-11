@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>حریم خصوصی · بومی</title>
+
+    <!-- فونت وزیر (Vazir) از CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* ===== متغیرهای CSS (همانند صفحه اصلی) ===== */
+        :root {
+            --bg: #0b0a16;
+            --surface: #1a1a2e;
+            --border: #2a2a3e;
+            --text-primary: #f0f0f4;
+            --text-secondary: #a8a8b8;
+            --text-muted: #6a6a7a;
+            --brand-start: #f6b868;
+            --brand-end: #ee7b4a;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body.light {
+            --bg: #ffffff;
+            --surface: #f0f0f4;
+            --border: #e0e0e8;
+            --text-primary: #1a1a1e;
+            --text-secondary: #5a5a62;
+            --text-muted: #a0a0aa;
+            --shadow: rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== ریست و استایل پایه ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-primary);
+            line-height: 2;
+            text-align: center;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .container {
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* ===== دکمه تغییر تم ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 12px var(--shadow);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        body.light .theme-toggle .icon {
+            transform: rotate(20deg);
+        }
+
+        /* ===== برند ===== */
+        .brand {
+            font-size: 3.2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .brand-sub {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+            margin-bottom: 2rem;
+        }
+
+        /* ===== محتوای حریم خصوصی ===== */
+        .privacy-content {
+            text-align: right;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .privacy-content h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: var(--brand-end);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .privacy-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .privacy-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .privacy-content ul li {
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .privacy-content ul li::before {
+            content: "• ";
+            color: var(--brand-end);
+            font-weight: 700;
+        }
+
+        .privacy-content .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.6rem 2rem;
+            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
+            color: #0b0a16;
+            text-decoration: none;
+            border-radius: 2rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .privacy-content .back-link:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(238, 123, 74, 0.25);
+        }
+
+        /* ===== فوتر ===== */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 1.8rem;
+            margin-top: 2.5rem;
+            transition: border-color 0.3s;
+        }
+
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--brand-end);
+        }
+
+        /* ===== واکنش‌گرایی ===== */
+        @media (max-width: 480px) {
+            .brand { font-size: 2.4rem; }
+            .theme-toggle { top: 0.8rem; left: 0.8rem; padding: 0.3rem 0.8rem; font-size: 0.7rem; }
+            .privacy-content { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== دکمه تغییر تم ===== -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+        <span class="icon" id="themeIcon">🌙</span>
+        <span id="themeLabel">تاریک</span>
+    </button>
+
+    <div class="container">
+
+        <!-- ===== برند ===== -->
+        <div class="brand">بومی</div>
+        <span class="brand-sub">— حریم خصوصی —</span>
+
+        <!-- ===== محتوای حریم خصوصی ===== -->
+        <div class="privacy-content">
+            <h1>حریم خصوصی شما نزد ما محفوظ است</h1>
+
+            <p>
+                در «بومی»، ما به حریم خصوصی کاربران خود احترام می‌گذاریم. این سند توضیح می‌دهد که چه اطلاعاتی جمع‌آوری می‌شود و چگونه از آنها استفاده می‌کنیم.
+            </p>
+
+            <ul>
+                <li><strong>ایمیل:</strong> تنها برای ارسال اطلاع‌رسانی‌های مرتبط با راه‌اندازی «بومی» استفاده می‌شود.</li>
+                <li><strong>موقعیت مکانی:</strong> در صورت اجازه، برای نمایش محتوای محله‌ای استفاده می‌شود.</li>
+                <li><strong>اطلاعات شخصی:</strong> هرگز به شخص یا سازمان دیگری فروخته یا منتقل نمی‌شود.</li>
+                <li><strong>امنیت:</strong> تمام داده‌ها با پروتکل‌های امن رمزگذاری می‌شوند.</li>
+                <li><strong>تغییرات:</strong> در صورت تغییر سیاست، از طریق ایمیل به شما اطلاع داده می‌شود.</li>
+            </ul>
+
+            <p>
+                اگر سوالی دارید، با ما تماس بگیرید:
+                <a href="mailto:support@myboom.ir" style="color: var(--brand-end); text-decoration: none;">support@myboom.ir</a>
+            </p>
+
+            <a href="/" class="back-link">بازگشت به صفحه قبل</a>
+        </div>
+
+        <!-- ===== فوتر ===== -->
+        <div class="footer">
+            <span>© ۲۰۲۶ بومی</span>
+            <a href="mailto:support@myboom.ir">تماس</a>
+            <a href="#">حریم خصوصی</a>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // تغییر تم (روشن/تاریک) با ذخیره در localStorage
+        // ============================================================
+        const toggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeLabel = document.getElementById('themeLabel');
+        const body = document.body;
+
+        function updateToggleUI(isDark) {
+            if (isDark) {
+                themeIcon.textContent = '🌙';
+                themeLabel.textContent = 'تاریک';
+            } else {
+                themeIcon.textContent = '☀️';
+                themeLabel.textContent = 'روشن';
+            }
+        }
+
+        const savedTheme = localStorage.getItem('bomi-theme');
+        const isDark = savedTheme === null ? true : savedTheme === 'dark';
+
+        if (isDark) {
+            body.classList.remove('light');
+        } else {
+            body.classList.add('light');
+        }
+        updateToggleUI(isDark);
+
+        toggleBtn.addEventListener('click', () => {
+            const nowDark = !body.classList.contains('light');
+            body.classList.toggle('light');
+            localStorage.setItem('bomi-theme', nowDark ? 'light' : 'dark');
+            updateToggleUI(!nowDark);
+        });
+    </script>
+
+</body>
+</html>
