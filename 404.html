@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>گم شدی؟ · بومی</title>
+
+    <!-- فونت وزیر -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* ===== متغیرهای CSS (هماهنگ با صفحه اصلی) ===== */
+        :root {
+            --bg: #0b0a16;
+            --surface: #1a1a2e;
+            --border: #2a2a3e;
+            --text-primary: #f0f0f4;
+            --text-secondary: #a8a8b8;
+            --text-muted: #6a6a7a;
+            --brand-start: #f6b868;
+            --brand-end: #ee7b4a;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --input-bg: #1e1e30;
+            --success: #66bb6a;
+            --error: #ef5350;
+            --toggle-bg: #2a2a3e;
+            --toggle-icon: #f0f0f4;
+        }
+
+        /* حالت روشن (Light Mode) */
+        body.light {
+            --bg: #ffffff;
+            --surface: #f0f0f4;
+            --border: #e0e0e8;
+            --text-primary: #1a1a1e;
+            --text-secondary: #5a5a62;
+            --text-muted: #a0a0aa;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --input-bg: #f5f5f7;
+            --toggle-bg: #e0e0e8;
+            --toggle-icon: #1a1a1e;
+        }
+
+        /* ===== ریست و استایل پایه ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-primary);
+            line-height: 1.8;
+            text-align: center;
+            transition: background 0.4s ease, color 0.4s ease;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* ===== دکمه تغییر تم (همانند صفحه اصلی) ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 12px var(--shadow);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        body.light .theme-toggle .icon {
+            transform: rotate(20deg);
+        }
+
+        /* ===== لوگو (همانند صفحه اصلی) ===== */
+        .logo-wrapper {
+            margin-bottom: 1.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-wrapper img {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 1.2rem;
+            transition: filter 0.3s ease;
+        }
+
+        body.light .logo-wrapper img {
+            filter: brightness(0.98) contrast(1.02);
+        }
+
+        .logo-fallback {
+            font-size: 1rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            padding: 2rem 3rem;
+            border-radius: 1.5rem;
+            border: 1px dashed var(--border);
+            display: none;
+        }
+
+        .logo-wrapper img:not([src]) + .logo-fallback,
+        .logo-wrapper img[src=""] + .logo-fallback {
+            display: block;
+        }
+
+        /* ===== برند ===== */
+        .brand {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            margin-bottom: 0.3rem;
+        }
+
+        .brand-sub {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+            margin-bottom: 1.8rem;
+        }
+
+        /* ===== کد خطا ===== */
+        .error-code {
+            font-size: 6.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 0.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        /* ===== عنوان مرموز ===== */
+        .mystic-title {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin: 0.5rem 0 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .mystic-title span {
+            display: block;
+            font-weight: 800;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-top: 0.2rem;
+        }
+
+        .mystic-sub {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 300;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin: 0.5rem 0 2rem 0;
+            opacity: 0.7;
+        }
+
+        /* ===== دکمه‌ها ===== */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand-start), var(--brand-end));
+            border: none;
+            border-radius: 2rem;
+            padding: 0.8rem 2.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #0b0a16;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            box-shadow: 0 2px 8px rgba(238, 123, 74, 0.15);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(238, 123, 74, 0.25);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.8rem 2.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            color: var(--text-primary);
+            border-color: var(--brand-end);
+        }
+
+        /* ===== فوتر (همانند صفحه اصلی) ===== */
+        .footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 1.8rem;
+            margin-top: 0.5rem;
+            transition: border-color 0.3s;
+        }
+
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--brand-end);
+        }
+
+        /* ===== واکنش‌گرایی ===== */
+        @media (max-width: 480px) {
+            .brand { font-size: 2.4rem; }
+            .error-code { font-size: 4.5rem; }
+            .mystic-title { font-size: 1.3rem; }
+            .mystic-title span { font-size: 1.8rem; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+            .logo-wrapper img { max-width: 180px; }
+            .theme-toggle { top: 0.8rem; left: 0.8rem; padding: 0.3rem 0.8rem; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== دکمه تغییر تم ===== -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+        <span class="icon" id="themeIcon">🌙</span>
+        <span id="themeLabel">تاریک</span>
+    </button>
+
+    <div class="container">
+
+        <!-- ===== لوگو ===== -->
+        <div class="logo-wrapper">
+            <img src="Boomi.png" alt="Boomi Logo – محله‌ی تو، صدای تو" />
+            <div class="logo-fallback">✨ بومی · لوگو</div>
+        </div>
+
+        <!-- ===== برند ===== -->
+        <div class="brand">بومی</div>
+        <span class="brand-sub">— گم‌شده در محله —</span>
+
+        <!-- ===== کد خطا ===== -->
+        <div class="error-code">۴۰۴</div>
+
+        <!-- ===== عنوان مرموز ===== -->
+        <div class="mystic-title">
+            <span>اینجا خبری نیست.</span>
+        </div>
+        <div class="mystic-sub">— شاید مسیر را اشتباه رفتی —</div>
+
+        <!-- ===== دکمه‌ها ===== -->
+        <div class="btn-group">
+            <a href="/" class="btn-primary">
+                <span>🏠</span> برگرد به خونه
+            </a>
+            <a href="javascript:history.back()" class="btn-secondary">
+                <span>↩️</span> برگرد به صفحه‌ی قبل
+            </a>
+        </div>
+
+        <!-- ===== فوتر ===== -->
+        <div class="footer">
+            <span>© ۲۰۲۶ بومی</span>
+            <a href="privacy.html">حریم خصوصی</a>
+            <a href="mailto:support@myboom.ir">تماس</a>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // تغییر تم (روشن/تاریک) با ذخیره در localStorage
+        // ============================================================
+        const toggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeLabel = document.getElementById('themeLabel');
+        const body = document.body;
+
+        // تابع برای به‌روزرسانی ظاهر دکمه
+        function updateToggleUI(isDark) {
+            if (isDark) {
+                themeIcon.textContent = '🌙';
+                themeLabel.textContent = 'تاریک';
+            } else {
+                themeIcon.textContent = '☀️';
+                themeLabel.textContent = 'روشن';
+            }
+        }
+
+        // بارگذاری تم ذخیره‌شده (همان کلید صفحه اصلی)
+        const savedTheme = localStorage.getItem('bomi-theme');
+        const isDark = savedTheme === null ? true : savedTheme === 'dark';
+
+        if (isDark) {
+            body.classList.remove('light');
+        } else {
+            body.classList.add('light');
+        }
+        updateToggleUI(isDark);
+
+        // رویداد کلیک دکمه
+        toggleBtn.addEventListener('click', () => {
+            const nowDark = !body.classList.contains('light');
+            body.classList.toggle('light');
+            localStorage.setItem('bomi-theme', nowDark ? 'light' : 'dark');
+            updateToggleUI(!nowDark);
+        });
+
+        // ============================================================
+        // (اختیاری) پیام در کنسول
+        // ============================================================
+        console.log('✅ بومی ۴۰۴ – گم نشو، برمی‌گردیم.');
+    </script>
+
+</body>
+</html>
